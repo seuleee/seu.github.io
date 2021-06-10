@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=feff2a042862f5bdcf22deac587c71f9&libraries=services,clusterer,drawing"></script>
+
+</head>
+<body>
+    
+    <div id="map" style="width:500px;height:400px;"></div>
+    
+    <script>
+
+        
+        
+            var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
+            var options = { //지도를 생성할 때 필요한 기본 옵션
+                center: new kakao.maps.LatLng(37.55564880, 126.91062927), //지도의 중심좌표.
+                level: 3 //지도의 레벨(확대, 축소 정도)
+            };
+            
+            var map = new kakao.maps.Map(container, options); //지도 생성및 객체 리턴
+            
+            var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+                    mapOption = {
+                            center: new kakao.maps.LatLng(37.55564880, 126.91062927), // 지도의 중심좌표
+                            level: 3 // 지도의 확대 레벨
+                        };
+                
+                    var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+                
+                    // 마커가 표시될 위치입니다 
+                    var markerPosition = new kakao.maps.LatLng(37.55564880, 126.91062927);
+                
+                    // 마커를 생성합니다
+                    var marker = new kakao.maps.Marker({
+                            position: markerPosition
+                        });
+                    
+                    //마커가 지도 위에 표시되도록 설정합니다
+                    marker.setMap(map);
+                    
+                    fetch("http://openapi.seoul.go.kr:8088/6e55736749746d6434377257644662/json/bikeList/1/1000/")
+                    .then(function(response)
+                    {
+                        if(response.status != 200) return alert("네트워크 오류입니다.");
+                        else return response.json();
+                    })
+                    .then(function(jsonData)
+                    {
+                        var location = jsonData.rentBikeStatus.row;
+                        console.log(location[0]);
+                        
+                        
+                        
+    
+    
+                        for(var i=0; i<location.length; i++)
+                        {
+                            var x = location[i].stationLatitude;
+                            var y = location[i].stationLongitude;
+                            
+                            
+    
+                            var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+                            mapOption = {
+                                    center: new kakao.maps.LatLng(x,y), // 지도의 중심좌표
+                                    level: 3 // 지도의 확대 레벨
+                                };
+    
+                            var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+    
+                            // 마커가 표시될 위치입니다 
+                            var markerPosition = new kakao.maps.LatLng(x,y);
+    
+                            // 마커를 생성합니다
+                            var marker = new kakao.maps.Marker({
+                                position: markerPosition
+                            });
+    
+                            //마커가 지도 위에 표시되도록 설정합니다
+                        }
+    
+            })
+
+
+
+
+
+            
+</script>
+    
+</body>
+</html>
